@@ -41,8 +41,8 @@ public class UserResource {
         user.setLastname(getUser.getLastname());
         user.setAge(getUser.getAge());
         user.setEmail(getUser.getEmail());
-        Set<Role> currentRoles = getUser.getRoles();
-        user.setRoles(currentRoles);
+//        Set<Role> currentRoles = getUser.getRoles();
+        user.setRoles(getUser.getRoles());
         return user;
     }
 
@@ -50,10 +50,6 @@ public class UserResource {
     @Transactional
     public ResponseEntity<String> updateUser(@RequestBody User user) {
         User existingUser = userService.findByUsername(user.getUsername());
-
-        if (existingUser == null) {
-            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
-        }
 
         existingUser.setFirstname(user.getFirstname());
         existingUser.setLastname(user.getLastname());
