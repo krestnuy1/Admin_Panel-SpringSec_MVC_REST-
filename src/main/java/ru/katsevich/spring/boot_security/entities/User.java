@@ -2,20 +2,13 @@ package ru.katsevich.spring.boot_security.entities;
 
 import lombok.Data;
 
+import net.minidev.json.annotate.JsonIgnore;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -34,11 +27,26 @@ public class User {
     private int age;
     private String email;
 
+
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+
+
+    @Transient
+    private String rolesasstring;
+
+    public String getRolesasstring() {
+        Set<String> roleNames = this.roles.stream()
+                .map(role -> role.getName().substring(5))
+                .collect(Collectors.toSet());
+        return String.join(", ", roleNames);
+    }
+
+
 
     public User() {
     }
@@ -48,10 +56,12 @@ public class User {
         this.password = encoder.encode(password);
     }
 
+
     public void addRole(Role role) {
         this.roles.add(role);
         role.getUsers().add(this);
     }
+
 
     public void removeRole(long roleId) {
         Role role = this.roles.stream().filter(t -> t.getId() == roleId).findFirst().orElse(null);

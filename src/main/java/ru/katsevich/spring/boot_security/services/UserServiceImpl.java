@@ -1,6 +1,7 @@
 package ru.katsevich.spring.boot_security.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
+
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {

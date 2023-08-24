@@ -1,9 +1,0 @@
-.zebra-table tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-
-.form-buttons {
-    display: flex;
-    gap: 10px;
-}

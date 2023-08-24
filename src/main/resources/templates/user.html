@@ -1,41 +1,84 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 <head>
-    <title>Spring Security Example</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <title>MainPage</title>
 </head>
 <body>
-<h1 th:text="${user.firstname} + ' this is your informational page!'"></h1>
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+    <a class="navbar-brand font-weight-bold text-white" th:text="${thisUser.email}" href="/user"></a>
+    <a class="navbar-brand text-white" th:text="${'Роли пользователя: ' + thisUser.rolesasstring}"></a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/logout">Выход</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 <br>
-<div th:if="${roles.contains('ROLE_ADMIN')}">
-    <form action="/admin" method="get">
-        <button type="submit">Go to Admin Page</button>
-    </form>
+<div class="row">
+    <div class="col-3">
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
+               aria-controls="v-pills-home" aria-selected="true">Профиль</a>
+        </div>
+    </div>
+    <div class="col-9">
+        <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel"
+                 aria-labelledby="v-pills-home-tab">
+                <div class="container">
+                    <h3>Информация о текущем пользователе:</h3>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Имя</th>
+                            <th>Фамилия</th>
+                            <th>Возраст</th>
+                            <th>Email</th>
+                            <th>Роли</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <td th:text="${thisUser.id}"></td>
+                        <td th:text="${thisUser.firstname}"></td>
+                        <td th:text="${thisUser.lastname}"></td>
+                        <td th:text="${thisUser.age}"></td>
+                        <td th:text="${thisUser.email}"></td>
+                        <td th:text="${thisUser.rolesasstring}"></td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-
-</th:block>
-<br>
-<h4 th:text="'Name:' + ${user.firstname}"></h4>
-<h4 th:text="'Lastname:' + ${user.lastname}"></h4>
-<h4 th:text="'Age:' + ${user.age}"></h4>
-<h4 th:text="'Email:' + ${user.email}"></h4>
-
-<form th:action="@{user/deleteUser}" method="post">
-    <input type="hidden" name="userID" th:value="${user.id}"/>
-    <button type="submit">Delete</button>
-</form>
-<br>
-<form th:action="@{user/updateUser}" method="get">
-    <input type="hidden" name="userID" th:value="${user.id}"/>
-    <button type="submit">Update</button>
-</form>
-</td>
-</tr>
-<br>
-<br>
-<form action="/logout" method="get">
-    <button type="submit">logout</button>
-</form>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 </body>
 </html>
+
