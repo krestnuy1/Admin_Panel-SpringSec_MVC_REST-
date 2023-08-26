@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.katsevich.spring.boot_security.entities.User;
 import ru.katsevich.spring.boot_security.repository.RoleRepository;
 import ru.katsevich.spring.boot_security.repository.UserRepository;
+import ru.katsevich.spring.boot_security.services.RoleService;
+import ru.katsevich.spring.boot_security.services.UserService;
+
 import java.security.Principal;
 import java.util.List;
 
@@ -16,17 +19,13 @@ import java.util.List;
 @Controller
 public class MainController {
 
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
+    private UserService userService;
 
+    private RoleService roleService;
     @Autowired
-    public void setRoleRepository(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
-    }
-
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public MainController(UserService userService, RoleService roleService) {
+        this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping("/")
@@ -36,29 +35,21 @@ public class MainController {
 
     @GetMapping("/user")
     public String userPage(Model model, Principal principal, Authentication authentication) {
-        User user = userRepository.findByUsername(principal.getName());
+        User user = userService.findByUsername(principal.getName());
         model.addAttribute("thisUser", user);
         return "user";
     }
 
 
-    @GetMapping("/getUserData")
-    @ResponseBody
-    public User getUserData(@RequestParam Long userId) {
-        // Здесь получите пользователя из базы данных по его ID и верните его в формате JSON
-        return userRepository.findById(userId).orElse(null);
-    }
-
-
     @GetMapping("/admin")
     public String adminPage(Model model, Principal principal) {
-        List<User> users = userRepository.findAll();
-        User user = userRepository.findByUsername(principal.getName());
+        List<User> users = userService.findAll();
+        User user = userService.findByUsername(principal.getName());
         model.addAttribute("userRoles", user.getRolesasstring());
         model.addAttribute("thisUser", user);
         model.addAttribute("allUsers", users);
         model.addAttribute("user", new User());
-        model.addAttribute("allRoles", roleRepository.findAll());
+        model.addAttribute("allRoles", roleService.findAll());
         return "adminPage";
     }
 

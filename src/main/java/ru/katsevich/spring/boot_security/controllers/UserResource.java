@@ -35,7 +35,6 @@ public class UserResource {
         User getUser = userService.getById(userId);
         User user = new User();
         user.setId(getUser.getId());
-        System.out.println(getUser.getRoles().toString());
         user.setUsername(getUser.getUsername());
         user.setFirstname(getUser.getFirstname());
         user.setLastname(getUser.getLastname());
@@ -46,20 +45,5 @@ public class UserResource {
         return user;
     }
 
-    @PostMapping
-    @Transactional
-    public ResponseEntity<String> updateUser(@RequestBody User user) {
-        User existingUser = userService.findByUsername(user.getUsername());
-
-        existingUser.setFirstname(user.getFirstname());
-        existingUser.setLastname(user.getLastname());
-        existingUser.setAge(user.getAge());
-        existingUser.setEmail(user.getEmail());
-        existingUser.setRoles(user.getRoles());
-
-        userService.save(existingUser);
-
-        return new ResponseEntity<>("User updated successfully", HttpStatus.OK);
-    }
 
 }
