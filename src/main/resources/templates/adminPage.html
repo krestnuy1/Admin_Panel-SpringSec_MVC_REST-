@@ -8,12 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="_csrf" th:content="${_csrf.token}">
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
+
     <title>MainPage</title>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-dark">
     <a class="navbar-brand font-weight-bold text-white" th:text="${thisUser.email}" href="/user"></a>
-    <a class="navbar-brand text-white" th:text="${'Роли пользователя: ' + userRoles}"></a>
+    <a class="navbar-brand text-white" th:text="'Роли пользователя: ' + ${thisUser.rolesasstring}"></a>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,7 +70,7 @@
                                     <th>Удалить</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="table-body">
                                 <tr th:each="CurrentUser : ${allUsers}">
                                     <td th:id="${CurrentUser.id}" th:text="${CurrentUser.id}"></td>
                                     <td th:text="${CurrentUser.firstname}"></td>
@@ -106,50 +107,53 @@
                         <div class="container">
                             <div class="row justify-content-center">
                                 <div class="col-lg-4">
-                                    <form th:method="post" th:action="@{/admin}" th:object="${user}"
+                                    <form th:method="post" th:action="@{/admin/save}" th:object="${user}"
                                           class="form">
                                         <div class="mb-1 text-center">
                                             <label for="username" class="form-label fw-bold">Имя пользователя</label>
-                                            <input type="text" th:field="*{username}" id="editingusername"
+                                            <input type="text" th:field="*{username}" id="newUsername"
                                                    class="form-control">
                                         </div>
                                         <div class="mb-1 text-center">
                                             <label for="password" class="form-label fw-bold">Пароль</label>
-                                            <input type="password" th:field="*{password}" id="editingpassword"
+                                            <input type="password" th:field="*{password}" id="newPassword"
                                                    class="form-control">
                                         </div>
                                         <input id="addedUserID" type="hidden" th:field="*{id}">
                                         <div class="mb-1 text-center">
                                             <label for="firstname" class="form-label fw-bold">Имя</label>
-                                            <input type="text" th:field="*{firstname}" id="editingfirstname"
+                                            <input type="text" th:field="*{firstname}" id="newFirstname"
                                                    class="form-control">
                                         </div>
                                         <div class="mb-1 text-center">
                                             <label for="secondname" class="form-label fw-bold">Фамилия</label>
-                                            <input type="text" th:field="*{lastname}" id="editingsecondname"
+                                            <input type="text" th:field="*{lastname}" id="newSecondname"
                                                    class="form-control">
                                         </div>
                                         <div class="mb-1 text-center">
                                             <label for="age" class="form-label fw-bold">Возраст</label>
-                                            <input type="number" value="" th:field="*{age}" id="editingage"
+                                            <input type="number" value="" th:field="*{age}" id="newAge"
                                                    class="form-control">
                                         </div>
                                         <div class="mb-1 text-center">
                                             <label for="email" class="form-label fw-bold">Email</label>
-                                            <input type="email" th:field="*{email}" id="editingemail"
+                                            <input type="email" th:field="*{email}" id="newEmail"
                                                    class="form-control">
                                         </div>
                                         <div class="mb-1 text-center">
-                                            <label for="selectedRoles" class="form-label fw-bold">Роли</label>
-                                            <select id="editingselectedRoles" name="selectedRoles" multiple="multiple"
-                                                    class="custom-select" style="max-height: 60px;">
+                                            <label for="newSelectedRoles" class="form-label fw-bold">Роли</label>
+                                            <select id="newSelectedRoles" name="newSelectedRoles" multiple="multiple"
+                                                    class="custom-select"
+                                                    style="max-height: 60px;">
                                                 <option th:each="role : ${allRoles}" th:value="${role.id}"
-                                                        th:text="${role.getName()}"
+                                                        th:text="${role.name}"
                                                         th:selected="${user.roles.contains(role)}"></option>
                                             </select>
                                         </div>
                                         <div class="text-center">
-                                            <button type="submit" class="btn btn-success">Сохранить</button>
+                                            <button type="button" class="btn btn-primary" id="saveNewUserButton">
+                                                Сохранить
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -192,7 +196,7 @@
 </div>
 
 
-<form th:method="post" th:action="@{/admin/update}" th:object="${user}" class="form">
+<form th:method="post" th:action="@{/admin/save}" th:object="${user}" class="form">
     <div class="modal fade" id="userForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
          aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -205,7 +209,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <input type="hidden" th:field="*{id}">
+                    <input type="hidden" id="id" th:field="*{id}">
                     <div class="mb-1 text-center">
                         <label for="username" class="form-label fw-bold">Имя пользователя</label>
                         <input type="text" th:field="*{username}" id="username" class="form-control">
@@ -241,7 +245,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                    <button type="submit" class="btn btn-primary" value="Сохранить">Сохранить</button>
+                    <button type="button" class="btn btn-primary" id="saveButton">Сохранить</button>
                 </div>
 
             </div>
@@ -258,32 +262,16 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-<script>
-    $('#userForm').on('shown.bs.modal', function (event) {
-        let button = $(event.relatedTarget)
-        let userId = button.data('userid')
 
-        if (userId) {
-            $.get({
-                url: 'admin/api/user/' + userId,
-                success: (data) => {
-                    let modal = $(this)
-                    modal.find('#username').val(data.username)
-                    modal.find('#firstname').val(data.firstname)
-                    modal.find('#secondname').val(data.lastname)
-                    modal.find('#age').val(data.age)
-                    modal.find('#email').val(data.email)
-                    modal.find('#selectedRoles').val(data.roles)
-                },
-                error: err => {
-                    alert(err);
-                }
-            });
 
-        }
-    })
-
-</script>
+<!--ЗАПОЛНЕНИЕ ТАБЛИЦЫ И УДАЛЕНИЕ ПОЛЬЗОВАТЕЛЯ-->
+<script src="../static/LoadTable.js"></script>
+<!--ОТКРЫТИЕ МОДАЛЬНОГО ОКНА С ДАННЫМИ ПОЛЬЗОВАТЕЛЯ-->
+<script src="../static/FillModal.js"></script>
+<!--СОХРАНЕНИЕ ПОЛЬЗОВАТЕЛЯ ИЗ МОДАЛЬНОГО ОКНА И ЗАПОЛНЕНИЕ ТАБЛИЦЫ-->
+<script src="../static/UpdateUserFromModal.js"></script>
+<!--ДОБАВЛЕНИЕ НОВОГО ПОЛЬЗОВАТЕЛЯ -->
+<script src="../static/AddNewUser.js"></script>
 </body>
 </html>
 

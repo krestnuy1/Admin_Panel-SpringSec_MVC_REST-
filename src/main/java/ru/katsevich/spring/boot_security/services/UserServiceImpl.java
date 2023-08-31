@@ -1,7 +1,6 @@
 package ru.katsevich.spring.boot_security.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.katsevich.spring.boot_security.entities.Role;
 import ru.katsevich.spring.boot_security.entities.User;
 import ru.katsevich.spring.boot_security.repository.UserRepository;
-
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,6 +24,7 @@ public class UserServiceImpl implements UserDetailsService {
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
+
     }
 
     public User findByUsername(String username) {
@@ -46,4 +45,5 @@ public class UserServiceImpl implements UserDetailsService {
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Set<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
+
 }

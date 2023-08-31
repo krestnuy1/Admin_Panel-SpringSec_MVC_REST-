@@ -1,5 +1,6 @@
-# Spring_Security_MVC
-This is a standard MVC application template that can be used for building applications. 
+# Spring_Security_MVC_REST
+An application template for building applications using a role-based access model. All requests are made using REST.
+The web application does not reload pages for any CRUD operations.
 The application supports two classes: User and Roles, which are connected through a @ManyToMany relationship.
 
 1. Spring Security configuration has been set up.
