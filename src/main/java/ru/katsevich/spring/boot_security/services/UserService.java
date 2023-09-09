@@ -11,6 +11,4 @@ public interface UserService extends JpaRepository<User, Long> {
 
     User findByUsername(String username);
 
-
-
 }

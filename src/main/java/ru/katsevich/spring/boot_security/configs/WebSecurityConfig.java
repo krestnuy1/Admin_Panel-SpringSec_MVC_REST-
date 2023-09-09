@@ -8,9 +8,10 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.katsevich.spring.boot_security.services.UserServiceImpl;
+import ru.katsevich.spring.boot_security.services.UserDetailsServiceImpl;
 
 
 
@@ -18,14 +19,12 @@ import ru.katsevich.spring.boot_security.services.UserServiceImpl;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserServiceImpl userService;
+    private UserDetailsService userService;
 
     @Autowired
-    public void setUserService(UserServiceImpl userService) {
+    public void setUserService(UserDetailsService userService) {
         this.userService = userService;
     }
-
-    
 
     private final SuccessUserHandler successUserHandler;
 

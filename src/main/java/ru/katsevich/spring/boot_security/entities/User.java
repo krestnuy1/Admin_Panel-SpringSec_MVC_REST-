@@ -44,7 +44,6 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
 
-
     @Transient
     private String rolesasstring;
 
