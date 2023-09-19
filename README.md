@@ -12,7 +12,4 @@ The application supports two classes: User and Roles, which are connected throug
 7. Logout functionality has been configured on any page using Thymeleaf features.
 8. The LoginSuccessHandler has been configured so that after authentication, an admin is redirected to the /admin page, and a user is directed to their /user page.
 
-   ![Screenshot](https://github.com/krestnuy1/Admin_Panel-SpringSec_MVC_REST-/blob/master/Screenshots/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202023-09-19%20%D0%B2%2007.57.42.png)
-   ![Screenshot](https://github.com/krestnuy1/Admin_Panel-SpringSec_MVC_REST-/blob/master/Screenshots/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202023-09-19%20%D0%B2%2007.57.46.png)
-   ![Screenshot](https://github.com/krestnuy1/Admin_Panel-SpringSec_MVC_REST-/blob/master/Screenshots/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202023-09-19%20%D0%B2%2007.57.59.png)
-   ![Screenshot](https://github.com/krestnuy1/Admin_Panel-SpringSec_MVC_REST-/blob/master/Screenshots/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202023-09-19%20%D0%B2%2007.58.31.png)
+  
